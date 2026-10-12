@@ -14,11 +14,8 @@ final class ScrollingFrameSource: NSObject, SCStreamOutput, SCStreamDelegate {
 
     func start(screen: NSScreen, region: NSRect, completion: @escaping (Result<Void, Error>) -> Void) {
         cancelled = false
-        if !CGPreflightScreenCaptureAccess(), !CGRequestScreenCaptureAccess() {
-            completion(.failure(NSError(domain: "Paster", code: 3,
-                                        userInfo: [NSLocalizedDescriptionKey: "需要在系统设置中允许屏幕录制"])))
-            return
-        }
+        // ScreenCaptureKit is the authority for capture access; a preflight result alone
+        // must not prevent an actual attempt after a permission change.
         guard let number = screen.deviceDescription[NSDeviceDescriptionKey("NSScreenNumber")] as? NSNumber else {
             completion(.failure(NSError(domain: "Paster", code: 1,
                                         userInfo: [NSLocalizedDescriptionKey: "无法识别显示器"])))
@@ -79,6 +76,10 @@ final class ScrollingFrameSource: NSObject, SCStreamOutput, SCStreamDelegate {
     func stream(_ stream: SCStream, didOutputSampleBuffer sampleBuffer: CMSampleBuffer,
                 of type: SCStreamOutputType) {
         guard type == .screen, CMSampleBufferIsValid(sampleBuffer),
+              let attachments = CMSampleBufferGetSampleAttachmentsArray(sampleBuffer, createIfNecessary: false)
+                as? [[SCStreamFrameInfo: Any]],
+              let status = attachments.first?[.status] as? Int,
+              SCFrameStatus(rawValue: status) == .complete,
               let buffer = CMSampleBufferGetImageBuffer(sampleBuffer) else { return }
         let image = CIImage(cvPixelBuffer: buffer)
         guard let cgImage = ciContext.createCGImage(image, from: image.extent) else { return }

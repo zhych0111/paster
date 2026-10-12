@@ -48,6 +48,12 @@ enum ScreenshotSelfTests {
     }
 
     static func run() {
+        let denied = NSError(domain: "com.apple.ScreenCaptureKit.SCStreamErrorDomain", code: -3801)
+        precondition(ScrollingCaptureSession.startFailureMessage(denied).contains("当前版本"))
+        let interrupted = NSError(domain: "Paster", code: 10,
+                                  userInfo: [NSLocalizedDescriptionKey: "显示器已经断开"])
+        let interruptedMessage = ScrollingCaptureSession.startFailureMessage(interrupted)
+        precondition(interruptedMessage.contains("显示器已经断开") && !interruptedMessage.contains("录屏授权"))
         let gate = ManualScrollGate()
         precondition(gate.mode == .automatic)
         precondition(gate.takeOver())

@@ -53,7 +53,7 @@ final class ScreenshotCaptureService {
                             (finished.terminationStatus == 1 && details.isEmpty) {
                     result = .cancelled
                 } else {
-                    result = .failed("截图没有生成图片；请检查屏幕录制权限并重试")
+                    result = .failed("系统截图未生成图片。若录屏权限已开启且 Paster 刚更新，请在系统设置中移除旧 Paster 条目，重新添加当前应用，再退出并重新打开 Paster。")
                 }
                 self.process = nil
                 self.captureDirectory = nil

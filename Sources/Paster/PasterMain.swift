@@ -5,6 +5,10 @@ import PasterCore
 @main
 struct PasterMain {
     static func main() {
+        if CommandLine.arguments.contains("--capture-self-test") {
+            CaptureSelfTest.run()
+            return
+        }
         if CommandLine.arguments.contains("--window-self-test") {
             ScreenshotSelfTests.runWindowVisibilityTest()
             return

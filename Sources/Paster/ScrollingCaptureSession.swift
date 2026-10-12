@@ -70,12 +70,20 @@ final class ScrollingCaptureSession {
                 self.startedAt = Date()
                 self.timer = Timer.scheduledTimer(withTimeInterval: 0.3, repeats: true) { [weak self] _ in self?.tick() }
             case .failure(let error):
-                self.finish(message: "无法开始滚动截图：\(error.localizedDescription)。若刚授予录屏权限，请重启 Paster 后重试。")
+                self.finish(message: Self.startFailureMessage(error))
             }
         }
     }
 
     func stopAndPreview() { finish(message: nil) }
+
+    static func startFailureMessage(_ error: Error) -> String {
+        let failure = error as NSError
+        if failure.domain == "com.apple.ScreenCaptureKit.SCStreamErrorDomain" && failure.code == -3801 {
+            return "macOS 未接受当前版本 Paster 的录屏授权。若设置里已开启且应用刚更新，请移除旧 Paster 条目，重新添加当前 Paster.app，然后退出并重新打开应用。"
+        }
+        return "无法开始滚动截图：\(error.localizedDescription)"
+    }
     func cancel() {
         onComplete = nil
         finish(message: nil)
