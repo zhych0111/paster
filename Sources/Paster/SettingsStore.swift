@@ -24,6 +24,28 @@ enum HotkeyChoice: Int, CaseIterable, Identifiable {
     }
 }
 
+enum ScreenshotHotkeyChoice: Int, CaseIterable, Identifiable {
+    case controlB = 0
+    case controlShiftB = 1
+    case commandShiftB = 2
+
+    var id: Int { rawValue }
+    var label: String {
+        switch self {
+        case .controlB: return "⌃B"
+        case .controlShiftB: return "⌃⇧B"
+        case .commandShiftB: return "⌘⇧B"
+        }
+    }
+    var carbonModifiers: UInt32 {
+        switch self {
+        case .controlB: return UInt32(controlKey)
+        case .controlShiftB: return UInt32(controlKey | shiftKey)
+        case .commandShiftB: return UInt32(cmdKey | shiftKey)
+        }
+    }
+}
+
 final class SettingsStore: ObservableObject {
     private let defaults: UserDefaults
     var onCapturePolicyChanged: (() -> Void)?
@@ -47,6 +69,9 @@ final class SettingsStore: ObservableObject {
     @Published var hotkeyChoice: HotkeyChoice {
         didSet { defaults.set(hotkeyChoice.rawValue, forKey: "hotkeyChoice"); onHotkeyChanged?() }
     }
+    @Published var screenshotHotkeyChoice: ScreenshotHotkeyChoice {
+        didSet { defaults.set(screenshotHotkeyChoice.rawValue, forKey: "screenshotHotkeyChoice"); onHotkeyChanged?() }
+    }
 
     init(defaults: UserDefaults = .standard) {
         self.defaults = defaults
@@ -56,5 +81,6 @@ final class SettingsStore: ObservableObject {
         excludedBundleIDs = defaults.stringArray(forKey: "excludedBundleIDs") ?? []
         autoPasteEnabled = defaults.bool(forKey: "autoPasteEnabled")
         hotkeyChoice = HotkeyChoice(rawValue: defaults.integer(forKey: "hotkeyChoice")) ?? .controlOptionV
+        screenshotHotkeyChoice = ScreenshotHotkeyChoice(rawValue: defaults.integer(forKey: "screenshotHotkeyChoice")) ?? .controlB
     }
 }

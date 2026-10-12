@@ -147,6 +147,16 @@ struct PasterView: View {
                     Text("快捷键被其他应用占用。仍可从菜单栏打开历史。")
                         .font(.caption).foregroundColor(.orange)
                 }
+                Picker("区域截图快捷键", selection: $settings.screenshotHotkeyChoice) {
+                    ForEach(ScreenshotHotkeyChoice.allCases) { choice in Text(choice.label).tag(choice) }
+                }
+                if !model.screenshotShortcutAvailable {
+                    Text("截图快捷键被占用。仍可从菜单栏启动区域截图。")
+                        .font(.caption).foregroundColor(.orange)
+                }
+                Button("请求滚动截图辅助功能权限") { QuickPasteController.requestAccessibilityPermission() }
+                Text("滚动截图还需要屏幕录制权限；自动滚动时需允许系统观察输入。授权不可用时可手动滚动。")
+                    .font(.caption).foregroundColor(.secondary)
                 Toggle("允许自动粘贴", isOn: $settings.autoPasteEnabled)
                 Text("自动粘贴需要系统辅助功能权限；未授权时仍可复制后手动粘贴。")
                     .font(.caption).foregroundColor(.secondary)

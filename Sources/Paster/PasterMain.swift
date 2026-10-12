@@ -30,6 +30,8 @@ struct PasterMain {
         let restoredSettings = SettingsStore(defaults: defaults)
         precondition(restoredSettings.recordingEnabled)
         precondition(restoredSettings.excludedBundleIDs == ["com.example.private"])
+        settings.screenshotHotkeyChoice = .controlShiftB
+        precondition(SettingsStore(defaults: defaults).screenshotHotkeyChoice == .controlShiftB)
 
         let board = NSPasteboard(name: NSPasteboard.Name("com.temptrip.paster.selftest.\(UUID().uuidString)"))
         let controller = QuickPasteController(pasteboard: board)
@@ -85,6 +87,7 @@ struct PasterMain {
         board.clearContents()
         print("Paster app self-test: settings, capture, self-write, text, URL, image, restart, paste fallback passed")
         print(hotkeyConflictVerified ? "Hotkey registration conflict: passed" : "Hotkey registration conflict: skipped (all choices occupied)")
+        ScreenshotSelfTests.run()
     }
 }
 
@@ -93,6 +96,7 @@ final class PasterAppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     private var panel: NSPanel?
     private var model: AppModel?
     private let hotkey = HotkeyService()
+    private let screenshots = ScreenshotCommandController()
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         do {
@@ -102,10 +106,29 @@ final class PasterAppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
             model.onRequestShowPanel = { [weak self] in self?.showPanel(nil) }
             model.settings.onHotkeyChanged = { [weak self] in
                 guard let self, let model = self.model else { return }
-                model.shortcutAvailable = self.hotkey.register(model.settings.hotkeyChoice)
+                self.registerHotkeys(model)
             }
-            model.shortcutAvailable = hotkey.register(model.settings.hotkeyChoice)
+            registerHotkeys(model)
             hotkey.onPressed = { [weak self] in self?.showPanel(nil) }
+            hotkey.onScreenshotPressed = { [weak self] in self?.screenshots.captureRegion() }
+            screenshots.onHideHistory = { [weak self] in
+                guard let panel = self?.panel else { return false }
+                let wasVisible = panel.isVisible
+                panel.orderOut(nil)
+                return wasVisible
+            }
+            screenshots.onRestoreHistory = { [weak self] in self?.panel?.orderFront(nil) }
+            screenshots.onCopy = { [weak model] png in _ = model?.copyScreenshot(png) }
+            screenshots.onError = { [weak model] message in
+                model?.message = message
+                let alert = NSAlert()
+                alert.messageText = "Paster 截图"
+                alert.informativeText = message
+                alert.runModal()
+            }
+            screenshots.onStatusChange = { [weak self] in
+                self?.statusItem?.button?.toolTip = self?.screenshots.status ?? "Paster"
+            }
             model.start()
             setupMenuBar()
             if !model.settings.recordingEnabled { showPanel(nil) }
@@ -118,7 +141,17 @@ final class PasterAppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         }
     }
 
-    func applicationWillTerminate(_ notification: Notification) { model?.stop() }
+    func applicationWillTerminate(_ notification: Notification) {
+        screenshots.shutdown()
+        model?.stop()
+    }
+
+    private func registerHotkeys(_ model: AppModel) {
+        let result = hotkey.register(history: model.settings.hotkeyChoice,
+                                     screenshot: model.settings.screenshotHotkeyChoice)
+        model.shortcutAvailable = result.history
+        model.screenshotShortcutAvailable = result.screenshot
+    }
 
     private func setupMenuBar() {
         let statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.squareLength)
@@ -137,6 +170,26 @@ final class PasterAppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         let open = NSMenuItem(title: "打开剪贴板历史", action: #selector(showPanel(_:)), keyEquivalent: "")
         open.target = self
         menu.addItem(open)
+        menu.addItem(.separator())
+        let region = NSMenuItem(title: "区域截图并贴图", action: #selector(captureRegion(_:)), keyEquivalent: "")
+        region.target = self
+        region.isEnabled = !screenshots.isBusy
+        menu.addItem(region)
+        let scrolling = NSMenuItem(title: "滚动截图", action: #selector(captureScrolling(_:)), keyEquivalent: "")
+        scrolling.target = self
+        scrolling.isEnabled = !screenshots.isBusy
+        menu.addItem(scrolling)
+        if screenshots.isBusy {
+            let status = NSMenuItem(title: screenshots.status ?? "截图进行中", action: nil, keyEquivalent: "")
+            status.isEnabled = false
+            menu.addItem(status)
+            if screenshots.isScrolling {
+                let stop = NSMenuItem(title: "停止并预览", action: #selector(stopScrolling(_:)), keyEquivalent: "")
+                stop.target = self
+                menu.addItem(stop)
+            }
+        }
+        menu.addItem(.separator())
         if let settings = model?.settings {
             let record = NSMenuItem(title: settings.recordingEnabled ? "停止记录" : "启用记录",
                                     action: #selector(toggleRecording(_:)), keyEquivalent: "")
@@ -166,6 +219,9 @@ final class PasterAppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     }
 
     @objc private func quit(_ sender: Any?) { NSApp.terminate(nil) }
+    @objc private func captureRegion(_ sender: Any?) { screenshots.captureRegion() }
+    @objc private func captureScrolling(_ sender: Any?) { screenshots.captureScrolling() }
+    @objc private func stopScrolling(_ sender: Any?) { screenshots.stopScrolling() }
 
     @objc private func showPanel(_ sender: Any?) {
         guard let model else { return }

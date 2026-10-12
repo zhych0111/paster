@@ -6,6 +6,7 @@ final class AppModel: ObservableObject {
     @Published private(set) var items: [ClipItem] = []
     @Published var message: String?
     @Published var shortcutAvailable = true
+    @Published var screenshotShortcutAvailable = true
 
     let settings: SettingsStore
     private let store: HistoryStore
@@ -39,6 +40,14 @@ final class AppModel: ObservableObject {
 
     func start() { monitor.start() }
     func stop() { monitor.stop() }
+
+    @discardableResult
+    func copyScreenshot(_ png: Data) -> Bool {
+        guard pasteController.copy(.image(png)) else { message = "无法复制截图"; return false }
+        monitor.markSelfWrite()
+        message = "截图已复制"
+        return true
+    }
 
     func refresh() throws {
         try store.cleanup(retentionDays: settings.retentionDays)
