@@ -1,0 +1,36 @@
+Sources/Paster/PinnedImageManager.swift
+  s_b83506b83c553b::t_c164b7366e9154 77-80,136,146
+README.md
+  s_b83506b83c553b::t_01a74cb6e9f9f5 29,53
+Sources/Paster/ScreenshotSelfTests.swift
+  s_b83506b83c553b::t_7a12454ccd386e 24-27,30
+  s_b83506b83c553b::t_60e48de7c33ac4 15-17,19-20,23,36-41
+  s_b83506b83c553b::t_927dff8203f05f 18
+  s_b83506b83c553b::t_b593812c3d18e4 4-14,21-22,28-29,31-35,42-49
+Sources/Paster/PasterMain.swift
+  s_b83506b83c553b::t_b593812c3d18e4 8-11
+  s_b83506b83c553b::t_01a74cb6e9f9f5 128
+docs/superpowers/specs/2026-10-12-screenshot-pinning-design.md
+  s_b83506b83c553b::t_9851a74f38d63b 37
+Resources/Info.plist
+  s_b83506b83c553b::t_01a74cb6e9f9f5 12-13
+Sources/Paster/ScreenshotCommandController.swift
+  s_b83506b83c553b::t_01a74cb6e9f9f5 261,264,282
+  s_b83506b83c553b::t_c164b7366e9154 227-228,268-269
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.45-trip",
+  "base_commit_sha": "7cfcf9add865575876e538f88c825bdb03673ea4",
+  "prompts": {},
+  "sessions": {
+    "s_b83506b83c553b": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a12a88-76a0-76c3-86ec-b88f93223a5f",
+        "model": "gpt-6.1-sol"
+      },
+      "human_author": "zhych0111 <63353019+zhych0111@users.noreply.github.com>"
+    }
+  }
+}
