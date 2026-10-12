@@ -1,0 +1,23 @@
+docs/superpowers/specs/2026-10-12-screenshot-pinning-design.md
+  s_b83506b83c553b::t_0b59f262de806c 9,26,29
+  s_b83506b83c553b::t_2e3e941744a8fa 25,33-34,38,50
+  s_b83506b83c553b::t_68c9debfd86c21 3-4
+  s_b83506b83c553b::t_268529f0aff5b0 1-2,5-8,10-24,27-28,30-32,35-37,39-47,49,51-58
+  s_b83506b83c553b::t_d2781e8aefa960 48
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.45-trip",
+  "base_commit_sha": "b803f6dd43811ae749ac55b90743ffaf693f2154",
+  "prompts": {},
+  "sessions": {
+    "s_b83506b83c553b": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a12a88-76a0-76c3-86ec-b88f93223a5f",
+        "model": "gpt-6-sol"
+      },
+      "human_author": "zhych0111 <63353019+zhych0111@users.noreply.github.com>"
+    }
+  }
+}
