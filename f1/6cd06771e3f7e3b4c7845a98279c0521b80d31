@@ -1,0 +1,21 @@
+README.md
+  s_b83506b83c553b::t_9207a4e70881ce 45-48
+LICENSE
+  s_b83506b83c553b::t_9207a4e70881ce 1-21
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.45-trip",
+  "base_commit_sha": "f16cd06771e3f7e3b4c7845a98279c0521b80d31",
+  "prompts": {},
+  "sessions": {
+    "s_b83506b83c553b": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a12a88-76a0-76c3-86ec-b88f93223a5f",
+        "model": "gpt-6-sol"
+      },
+      "human_author": "zhych0111 <63353019+zhych0111@users.noreply.github.com>"
+    }
+  }
+}
