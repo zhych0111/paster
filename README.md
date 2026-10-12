@@ -42,3 +42,7 @@ open dist/Paster.app
 应用图标源文件是 `Resources/PasterLogo.png`，打包使用 `Resources/Paster.icns`。
 
 功能规格、技术设计和任务清单位于 `openspec/changes/macos-clipboard-manager/`。
+
+## 许可证
+
+本项目采用 [MIT License](LICENSE)。
