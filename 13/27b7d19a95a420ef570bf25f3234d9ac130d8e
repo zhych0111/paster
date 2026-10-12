@@ -1,0 +1,83 @@
+Sources/Paster/PinnedImageManager.swift
+  s_b83506b83c553b::t_2ae7d990b639c1 1-55,57-102,104-113,124-131,133-176,193-202
+  s_b83506b83c553b::t_42a211e34ee8cc 56,132
+  s_b83506b83c553b::t_42928ada7b2531 114-123,177-192
+  s_b83506b83c553b::t_aa9a903e018473 103
+Sources/Paster/HotkeyService.swift
+  s_b83506b83c553b::t_11f72a3bce770e 5,7-13,19-20,27-30,36-47,52,54
+Sources/Paster/SettingsStore.swift
+  s_b83506b83c553b::t_11f72a3bce770e 27-48,72-74,84
+Sources/Paster/ScrollingFrameSource.swift
+  s_b83506b83c553b::t_f16a8ab27235f3 17-21
+  s_b83506b83c553b::t_10e383fe5c2d97 11,16,49-53,64
+  s_b83506b83c553b::t_ad370733b85478 1-10,12-15,22-48,54-63,65-90
+Sources/Paster/PasterMain.swift
+  s_b83506b83c553b::t_b49253891a6ffb 33-34,99,109,111,113-131,144-154,173-192,222-224
+  s_b83506b83c553b::t_f5f576a2e7bfea 90
+Sources/Paster/ManualScrollDetector.swift
+  s_b83506b83c553b::t_0faf4d2e9735be 1-102
+Resources/Info.plist
+  s_b83506b83c553b::t_8f66b638ed4702 12-13
+README.md
+  s_b83506b83c553b::t_8f66b638ed4702 29
+  s_b83506b83c553b::t_0abb4be28a654a 3,22-28
+Sources/Paster/AppModel.swift
+  s_b83506b83c553b::t_11f72a3bce770e 9,44-50
+Sources/Paster/ScrollSelectionOverlay.swift
+  s_b83506b83c553b::t_4e796f1e6ff8fd 1-90
+Sources/Paster/ScreenshotCaptureService.swift
+  s_b83506b83c553b::t_eac1c94a9e537d 20
+  s_b83506b83c553b::t_e233c4f4152a02 14-19,21-23
+  s_b83506b83c553b::t_ba199596bf5f6d 56
+  s_b83506b83c553b::t_d1d5c33a66ce5a 37,40,43,52-53
+  s_b83506b83c553b::t_7910208e72ef4e 42
+  s_b83506b83c553b::t_551bcaefb6d2ea 1-13,24-36,38-39,41,44-51,54-55,57-77
+docs/superpowers/plans/2026-10-12-screenshot-pinning.md
+  s_b83506b83c553b::t_0abb4be28a654a 24-26,30-31,36-39,43-45
+  s_b83506b83c553b::t_befb6e40bd2618 1-23,27-29,33-35,40-42
+  s_b83506b83c553b::t_42a211e34ee8cc 32
+Sources/Paster/PasterView.swift
+  s_b83506b83c553b::t_11f72a3bce770e 150-156
+  s_b83506b83c553b::t_10e383fe5c2d97 157-159
+Sources/Paster/ScreenshotCommandController.swift
+  s_b83506b83c553b::t_f00d32372717c2 36,42-43,137,140,146-148,160-162,193,249-283
+  s_b83506b83c553b::t_6de653ddccfbdb 59-60
+  s_b83506b83c553b::t_c9972ae4a9d391 50-51,61-69,72-75,107-109
+  s_b83506b83c553b::t_9b12e421ae1619 49,82,91,106,120,144,185,189-190
+  s_b83506b83c553b::t_10e383fe5c2d97 48,78,84,89,186,213
+  s_b83506b83c553b::t_bdd2a94c7d0d64 1-35,37-41,44-45,47,52-58,70-71,76-77,79-81,83,85-88,90,92-105,110-119,121-127,135-136,138-139,141-143,145,149-154,170-184,187-188,191-192,194-198,200-207,210-212,214-248,284
+  s_b83506b83c553b::t_6f41ba78e6dbf0 46,199,208-209
+  s_b83506b83c553b::t_d6eb67dff4ab34 128-134,155-159,163-169
+Sources/Paster/ScreenshotSelfTests.swift
+  s_b83506b83c553b::t_3477e8d4b0c668 22-31
+  s_b83506b83c553b::t_f5f576a2e7bfea 1-21,32,51-52,55-59,65-77
+  s_b83506b83c553b::t_8e1afe601a3dce 33-39,53-54,60-64
+  s_b83506b83c553b::t_42a211e34ee8cc 40-50
+Sources/Paster/FrameStitcher.swift
+  s_b83506b83c553b::t_449a90120ab03c 1-15,19-20,44-87,112-138,140-142,144-146,148-149
+  s_b83506b83c553b::t_96b8c8b347dfe1 16-18,22-43,88-111
+  s_b83506b83c553b::t_d0c0de41b94b7b 139,143,147
+  s_b83506b83c553b::t_f16a8ab27235f3 21
+Sources/Paster/ScrollingCaptureSession.swift
+  s_b83506b83c553b::t_6f41ba78e6dbf0 86-89
+  s_b83506b83c553b::t_9b12e421ae1619 79-82
+  s_b83506b83c553b::t_5283e8136ca469 1-44,46-58,60-78,83-85,90-100,106-120,125-143,145-167
+  s_b83506b83c553b::t_10e383fe5c2d97 45,59,102,104-105,144
+  s_b83506b83c553b::t_f16a8ab27235f3 101,103,121-124
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.45-trip",
+  "base_commit_sha": "1327b7d19a95a420ef570bf25f3234d9ac130d8e",
+  "prompts": {},
+  "sessions": {
+    "s_b83506b83c553b": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a12a88-76a0-76c3-86ec-b88f93223a5f",
+        "model": "gpt-6-sol"
+      },
+      "human_author": "zhych0111 <63353019+zhych0111@users.noreply.github.com>"
+    }
+  }
+}
