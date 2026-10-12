@@ -63,6 +63,8 @@ python3 scripts/setup-local-signing.py --trust-code-signing
 
 第一条命令创建项目专用的本机证书和钥匙串，并在当前用户的信任设置中只启用该证书的代码签名政策，不启用 TLS 网络证书信任。私钥、钥匙串和本机配置位于被 Git 忽略的 `.local/signing/`，不得上传或共享；构建结束后恢复原来的钥匙串搜索列表。它用于本机开发，不等同于 Apple Developer ID 或公证。也可通过 `PASTER_SIGN_IDENTITY` 指定已有的开发者签名身份。
 
+`python3 scripts/verify-signing.py` 会签署一个内容已变化的临时副本，并检查它仍满足原构建的签名身份要求；不会覆盖当前应用。
+
 首次从临时签名切到固定证书时，需要在系统设置里移除旧 Paster 录屏条目，重新添加当前 `.app` 并授予权限，再退出并重开。之后保留同一证书，更新版本即可满足同一身份要求。[Apple 对签名身份与隐私授权的说明](https://developer.apple.com/documentation/technotes/tn3127-inside-code-signing-requirements)
 
 从实际 `.app` 运行 `--capture-self-test --diagnostic-output <本机JSON路径>` 可检查 ScreenCaptureKit 和系统截图两条路径是否收到小尺寸图片。检查只保留结果、错误代码和图片尺寸，临时图片立即删除。
