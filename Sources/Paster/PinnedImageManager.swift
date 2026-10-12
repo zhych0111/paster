@@ -74,6 +74,10 @@ final class PinnedImageManager: NSObject, NSWindowDelegate {
         let panel = PinnedPanel(contentRect: NSRect(origin: origin, size: NSSize(width: width, height: height)),
                                 styleMask: [.borderless, .resizable], backing: .buffered, defer: false)
         panel.level = .floating
+        panel.isFloatingPanel = true
+        panel.hidesOnDeactivate = false
+        panel.collectionBehavior = [.moveToActiveSpace, .fullScreenAuxiliary]
+        panel.title = "Paster 贴图"
         panel.hasShadow = true
         panel.backgroundColor = .windowBackgroundColor
         panel.isReleasedWhenClosed = false
@@ -129,7 +133,7 @@ final class PinnedImageManager: NSObject, NSWindowDelegate {
         let entry = Entry(window: panel, png: png, pixels: pixels, imageView: imageView,
                           scrollView: scroll, imageAspect: aspect)
         entries[ObjectIdentifier(panel)] = entry
-        if show { panel.makeKeyAndOrderFront(nil) }
+        if show { panel.orderFrontRegardless() }
     }
 
     func hideVisible() -> [NSPanel] {
@@ -139,7 +143,7 @@ final class PinnedImageManager: NSObject, NSWindowDelegate {
     }
 
     func restore(_ windows: [NSPanel]) {
-        for window in windows where entries[ObjectIdentifier(window)] != nil { window.orderFront(nil) }
+        for window in windows where entries[ObjectIdentifier(window)] != nil { window.orderFrontRegardless() }
     }
 
     func closeAll() {

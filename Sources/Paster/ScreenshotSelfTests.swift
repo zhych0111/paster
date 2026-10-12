@@ -1,6 +1,52 @@
 import AppKit
 
 enum ScreenshotSelfTests {
+    static func runWindowVisibilityTest() {
+        let app = NSApplication.shared
+        app.setActivationPolicy(.accessory)
+        let pins = PinnedImageManager()
+        let png = NSBitmapImageRep(cgImage: fixture(startRow: 0))
+            .representation(using: .png, properties: [:])!
+        pins.add(png)
+        guard let window = app.windows.first(where: { $0.title == "Paster 贴图" }) else {
+            preconditionFailure("Pin window was not created")
+        }
+        let number = window.windowNumber
+        let baseline = NSPanel(contentRect: NSRect(x: 60, y: 60, width: 180, height: 100),
+                               styleMask: [.borderless], backing: .buffered, defer: false)
+        baseline.isReleasedWhenClosed = false
+        baseline.level = .floating
+        baseline.orderFrontRegardless()
+        let baselineNumber = baseline.windowNumber
+        app.activate(ignoringOtherApps: true)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            precondition(app.isActive, "Visibility test did not activate the app")
+            guard let finder = NSRunningApplication.runningApplications(withBundleIdentifier: "com.apple.finder").first,
+                  finder.activate(options: [.activateIgnoringOtherApps]) else {
+                preconditionFailure("Visibility test could not switch to Finder")
+            }
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                let windows = CGWindowListCopyWindowInfo(.optionOnScreenOnly, kCGNullWindowID) as? [[String: Any]] ?? []
+                precondition(!app.isActive, "Visibility test did not deactivate the app")
+                let visible = windows.contains {
+                    ($0[kCGWindowNumber as String] as? NSNumber)?.intValue == number &&
+                    ($0[kCGWindowOwnerPID as String] as? NSNumber)?.int32Value == ProcessInfo.processInfo.processIdentifier
+                }
+                precondition(visible, "Pin disappeared from WindowServer after app deactivation")
+                let baselineVisible = windows.contains {
+                    ($0[kCGWindowNumber as String] as? NSNumber)?.intValue == baselineNumber &&
+                    ($0[kCGWindowOwnerPID as String] as? NSNumber)?.int32Value == ProcessInfo.processInfo.processIdentifier
+                }
+                precondition(!baselineVisible, "Default NSPanel did not reproduce the disappearance")
+                baseline.close()
+                pins.closeAll()
+                print("Screenshot window self-test: pin remains on screen after deactivation passed")
+                exit(0)
+            }
+        }
+        withExtendedLifetime(pins) { app.run() }
+    }
+
     static func run() {
         let gate = ManualScrollGate()
         precondition(gate.mode == .automatic)

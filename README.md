@@ -26,7 +26,7 @@ open dist/Paster.app
 - 滚动截图需要“屏幕录制”权限。自动滚动和输入接管还需要系统允许辅助功能及输入观察；这些权限不可用时，截图仍可在手动滚动模式下进行。首次允许屏幕录制后若仍无法取帧，请重启 Paster 再试。
 - 为避免错误拼接，画面重叠不可靠时会停止并保留可用部分。单张图片最多 2500 万像素；滚动截图最多采样 60 段或运行 120 秒。不同应用的滚动实现不一，自动滚动与拼接效果需要在目标应用中实测。
 
-**当前 GitHub Release 的 v0.1.0 DMG 是旧版快照，尚不包含上述截图功能。** 本节适用于从当前源码构建的 0.2.0 开发版应用。
+**当前 GitHub Release 的 v0.1.0 DMG 是旧版快照，尚不包含上述截图功能。** 本节适用于从当前源码构建的 0.2.1 开发版应用。
 
 ### 在另一台 Mac 上试用
 
@@ -49,6 +49,8 @@ open dist/Paster.app
 源代码由 Swift Package Manager 管理。`PasterCore` 保存数据模型、捕获策略和 SQLite 历史；`Paster` 包含 macOS 菜单栏界面和系统剪贴板接入。此机器的 Command Line Tools 不提供 `XCTest` 或 Swift Testing，因此目前使用 `PasterSelfTests` 和 `Paster --self-test` 进行自动自检。将来配置完整 Xcode 后，可将这些检查迁移到标准测试目标。
 
 应用图标源文件是 `Resources/PasterLogo.png`，打包使用 `Resources/Paster.icns`。
+
+`swift run Paster --window-self-test` 会短暂显示测试窗口并切换到 Finder，通过 WindowServer 检查贴图在应用失去焦点后仍留在屏幕上。普通 `--self-test` 不执行这项桌面交互测试。
 
 功能规格、技术设计和任务清单位于 `openspec/changes/macos-clipboard-manager/`。
 

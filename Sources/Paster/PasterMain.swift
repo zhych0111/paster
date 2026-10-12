@@ -5,6 +5,10 @@ import PasterCore
 @main
 struct PasterMain {
     static func main() {
+        if CommandLine.arguments.contains("--window-self-test") {
+            ScreenshotSelfTests.runWindowVisibilityTest()
+            return
+        }
         if CommandLine.arguments.contains("--self-test") {
             runPasteboardSelfTest()
             return
@@ -121,6 +125,7 @@ final class PasterAppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
             screenshots.onCopy = { [weak model] png in _ = model?.copyScreenshot(png) }
             screenshots.onError = { [weak model] message in
                 model?.message = message
+                NSApp.activate(ignoringOtherApps: true)
                 let alert = NSAlert()
                 alert.messageText = "Paster 截图"
                 alert.informativeText = message

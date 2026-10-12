@@ -224,6 +224,8 @@ final class ScreenshotCommandController: NSObject {
         let panel = NSPanel(contentRect: NSRect(x: 0, y: 0, width: 680, height: 620),
                             styleMask: [.titled, .closable, .resizable], backing: .buffered, defer: false)
         panel.title = "Paster 滚动截图"
+        panel.hidesOnDeactivate = false
+        panel.collectionBehavior = [.moveToActiveSpace, .fullScreenAuxiliary]
         panel.isReleasedWhenClosed = false
         panel.contentView = NSHostingView(rootView: ScrollingPreviewView(image: image,
             onPin: { [weak self] in self?.pins.add(png); self?.preview?.close() },
@@ -256,13 +258,15 @@ final class ScreenshotCommandController: NSObject {
             NSPoint(x: region.maxX + 8, y: region.midY),
             NSPoint(x: region.minX - size.width - 8, y: region.midY)
         ]
-        guard let origin = candidates.first(where: {
+        let origin = candidates.first(where: {
             let rect = NSRect(origin: $0, size: size)
             return visible.contains(rect) && !rect.intersects(region)
-        }) else { return }
+        }) ?? NSPoint(x: visible.maxX - size.width - 12, y: visible.maxY - size.height - 12)
         let panel = NSPanel(contentRect: NSRect(origin: origin, size: size),
                             styleMask: [.borderless, .nonactivatingPanel], backing: .buffered, defer: false)
         panel.level = .floating
+        panel.hidesOnDeactivate = false
+        panel.collectionBehavior = [.moveToActiveSpace, .fullScreenAuxiliary]
         panel.hasShadow = true
         panel.backgroundColor = .windowBackgroundColor
         panel.isReleasedWhenClosed = false
@@ -275,7 +279,7 @@ final class ScreenshotCommandController: NSObject {
         button.frame = NSRect(x: 8, y: 3, width: 108, height: 27)
         root.addSubview(button)
         panel.contentView = root
-        panel.orderFront(nil)
+        panel.orderFrontRegardless()
         progressPanel = panel
         progressLabel = label
     }
